@@ -1,0 +1,27 @@
+{
+    Example = {
+        name = "Example",
+        desc = "Just example for application installer",
+        path = "ExPr",
+        version = "1",
+        install = "ExPr/installer.lua",
+        files = {
+            { link = "https://raw.githubusercontent.com/Mrbiglizard/MrblLuaThings/refs/heads/main/Programs_pattern/installer.lua", name = "installer.lua", type = "installer" },
+            { link = "https://raw.githubusercontent.com/Mrbiglizard/MrblLuaThings/refs/heads/main/Programs_pattern/example.lua",   name = "example.lua", type = "program" },
+            { link = "https://raw.githubusercontent.com/Mrbiglizard/MrblLuaThings/refs/heads/main/lib/ExampleLib.lua",           name = "ExampleLib.lua",         type = "api" },
+            { link = "https://raw.githubusercontent.com/Mrbiglizard/MrblLuaThings/refs/heads/main/Programs_pattern/file",   name = "file",        type = "file" }
+        }
+    },
+    LiftSys = {
+        name = "Lift system",
+        desc = "Controler for Create lift",
+        path = "LiftSystem",
+        version = "1.0",
+        install = "LiftSystem/installer.lua",
+        files = {
+            { link = "https://raw.githubusercontent.com/Mrbiglizard/MrblLuaThings/refs/heads/main/LiftSystem/installer.lua", name = "installer.lua", type = "installer" },
+            { link = "https://raw.githubusercontent.com/Mrbiglizard/MrblLuaThings/refs/heads/main/LiftSystem/LiftSys.lua",   name = "LiftSys.lua",   type = "program" },
+            { link = "https://raw.githubusercontent.com/Mrbiglizard/MrblLuaThings/refs/heads/main/lib/MyApi.lua",           name = "MyApi.lua",     type = "api" }
+        }
+    }
+}
