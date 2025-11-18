@@ -1,4 +1,4 @@
-local ExampleLib = require "ExPr/api/ExampleLib"
+local ExampleLib = require "api/ExampleLib"
 local NormalBehavior = 1
 
 term.setTextColor(colors.gray)
