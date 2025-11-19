@@ -1,7 +1,7 @@
 local MyApi = require "api/MyApi"
-local CONF_PATH = "/Config.conf"
-local DAT_PATH = "/floors.dat"
-local INSTALLER_PATH = "/installer.lua"
+local CONF_PATH = "LiftSystem/Config.conf"
+local DAT_PATH = "LiftSystem/floors.dat"
+local INSTALLER_PATH = "LiftSystem/installer.lua"
 local Com = MyApi.Command()
 local modem = MyApi.ModemET()
 local Display = MyApi.Display(peripheral.find("monitor"))
