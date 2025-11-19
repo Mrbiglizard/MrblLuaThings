@@ -162,7 +162,7 @@ local function updButton()
     if Me.TypeSt == "FloorStation" then
         Display.clearButton()
         for key, value in pairs(FloorsList.Floors) do
-            Display.addButton(key, value, floorButton)
+            Display.addButton(key, tonumber(value), floorButton)
         end
         PrefixSet()
         Display.write(0.5)
