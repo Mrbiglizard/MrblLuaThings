@@ -124,7 +124,7 @@ local function install()
         end
     end
     bar(0.7, YBfloor)
-    local file = fs.open("Config.conf", "w")
+    local file = fs.open("LiftSystem/Config.conf", "w")
     file.write(textutils.serialize(Mconfig))
     file.close()
     if fs.exists("startup.lua") then
