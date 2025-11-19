@@ -14,7 +14,6 @@ local function loadSources()
     if dl then
         print("Load data from github")
         programs = textutils.unserialise(dl.readAll())
-        print(#programs)
         dl.close()
     else
         print("Github not available")
