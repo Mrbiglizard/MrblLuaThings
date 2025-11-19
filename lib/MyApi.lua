@@ -285,8 +285,8 @@ end
 
 local function ModemET()
     local Channel
-    --local modem = peripheral.find("modem", function(name, modem5) return modem5.isWireless() end)
-    local modem = peripheral.find("modem", function(name, modem5) return true end)
+    local modem = peripheral.find("modem", function(name, modem5) return modem5.isWireless() end)
+    --local modem = peripheral.find("modem", function(name, modem5) return true end)
     local OldMesage = {{Type = "", id = 0, Sender = "", Data = ""} }
     local MyName
     local Mesage = { Type = "", id = 0, Sender = "", Data = "" }
