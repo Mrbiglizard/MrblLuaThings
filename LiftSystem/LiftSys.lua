@@ -30,11 +30,11 @@ local function ReleaseFloor(thisStop)
 end
 local function PrefixSet()
     Display.SetPrefix(" ")
-    if Lift.NextFloor == Lift.CurFloor then
+    if Lift.NextFloor == tonumber(Lift.CurFloor) then
         Display.SetPrefix("#", Lift.NextFloor)
     else
         Display.SetPrefix(">", Lift.NextFloor)
-        Display.SetPrefix("=", Lift.CurFloor)
+        Display.SetPrefix("=", tonumber(Lift.CurFloor))
     end
 end
 local function UpdateAll()
@@ -47,7 +47,7 @@ local function clear(cl_arg)
         FloorsList = { Floors = {} }
         fs.delete("floors.dat")
         local MYkey = Me.Name
-        FloorsList.Floors[MYkey] = Me.Floor
+        FloorsList.Floors[MYkey] = tonumber(Me.Floor)
         timer_id = os.startTimer(3)
     elseif cl_arg[1] == "all" then
         modem.SendMesage("ClearAll", "ALL")
@@ -196,9 +196,9 @@ end
 local function StationMesageHandler(Type, data)
     MesageHandler(Type, data)
     if Type == "FloorInfo" or Type == "SetFloor" then
-        if Lift.CurFloor < Lift.NextFloor then
+        if tonumber(Lift.CurFloor) < Lift.NextFloor then
             LiftUp()
-        elseif Lift.CurFloor > Lift.NextFloor then
+        elseif tonumber(Lift.CurFloor) > Lift.NextFloor then
             LiftDown()
         else
             LiftStop()
@@ -221,10 +221,10 @@ local function FloorMesageHandler(Type, data)
     elseif Type == "SetFloor" then
         ReleaseFloor((tonumber(Lift.NextFloor) == tonumber(Me.Floor)))
         --print((tonumber(Lift.NextFloor) == tonumber(Me.Floor)))
-        if (Lift.NextFloor <= Me.Floor and Lift.CurFloor >= Me.Floor) or (Lift.NextFloor >= Me.Floor and Lift.CurFloor <= Me.Floor) then
+        if (Lift.NextFloor <= tonumber(Me.Floor) and tonumber(Lift.CurFloor) >= tonumber(Me.Floor)) or (Lift.NextFloor >= tonumber(Me.Floor) and tonumber(Lift.CurFloor) <= tonumber(Me.Floor)) then
             Door(true)
         else
-            Door(Lift.NextFloor == Me.Floor)
+            Door(Lift.NextFloor == tonumber(Me.Floor))
         end
         Display.write(1)
     elseif Type == "FloorInfo" then
@@ -238,7 +238,7 @@ end
 local function redstoneHandler()
     if Me.TypeSt == "FloorStation" then
         if redstone.getInput("right") then
-            modem.SendMesage("FloorInfo", Me.Floor)
+            modem.SendMesage("FloorInfo", tonumber(Me.Floor))
             Lift.CurFloor = tonumber(Me.Floor)
             PrefixSet()
             Display.write(1)
