@@ -46,8 +46,8 @@ local function clear(cl_arg)
     if cl_arg[1] == "me" then
         FloorsList = { Floors = {} }
         fs.delete("floors.dat")
-        local MYkey = Me.Me.Name
-        FloorsList.Floors[MYkey] = Me.Me.Floor
+        local MYkey = Me.Name
+        FloorsList.Floors[MYkey] = Me.Floor
         timer_id = os.startTimer(3)
     elseif cl_arg[1] == "all" then
         modem.SendMesage("ClearAll", "ALL")
@@ -62,7 +62,7 @@ local function getFloors()
     modem.SendMesage("SendFloors", FloorsList)
 end
 
-if Me.Me.TypeSt == "FloorStation" then
+if Me.TypeSt == "FloorStation" then
 Com.AddComand("getfloors", getFloors)
 end
 
@@ -97,7 +97,7 @@ local function ReadFile()
     else
         clear({ "me" })
     end
-    modem.SetName(Me.Me.Name)
+    modem.SetName(Me.Name)
     modem.SetChannel(44)
     table.sort(FloorsList.Floors, function(a, b)
         return tonumber(a) < tonumber(b)
@@ -154,12 +154,12 @@ local function floorButton(ID, Name)
     Lift.NextFloor = ID
     PrefixSet()
     Goto({ ID })
-    ReleaseFloor((tonumber(Lift.NextFloor) == tonumber(Me.Me.Floor)))
+    ReleaseFloor((tonumber(Lift.NextFloor) == tonumber(Me.Floor)))
     Display.write(1)
 end
 
 local function updButton()
-    if Me.Me.TypeSt == "FloorStation" then
+    if Me.TypeSt == "FloorStation" then
         Display.clearButton()
         for key, value in pairs(FloorsList.Floors) do
             Display.addButton(key, value, floorButton)
@@ -219,12 +219,12 @@ local function FloorMesageHandler(Type, data)
     elseif Type == "SendMe" then
         TryAddFloor(data)
     elseif Type == "SetFloor" then
-        ReleaseFloor((tonumber(Lift.NextFloor) == tonumber(Me.Me.Floor)))
-        --print((tonumber(Lift.NextFloor) == tonumber(Me.Me.Floor)))
-        if (Lift.NextFloor <= Me.Me.Floor and Lift.CurFloor >= Me.Me.Floor) or (Lift.NextFloor >= Me.Me.Floor and Lift.CurFloor <= Me.Me.Floor) then
+        ReleaseFloor((tonumber(Lift.NextFloor) == tonumber(Me.Floor)))
+        --print((tonumber(Lift.NextFloor) == tonumber(Me.Floor)))
+        if (Lift.NextFloor <= Me.Floor and Lift.CurFloor >= Me.Floor) or (Lift.NextFloor >= Me.Floor and Lift.CurFloor <= Me.Floor) then
             Door(true)
         else
-            Door(Lift.NextFloor == Me.Me.Floor)
+            Door(Lift.NextFloor == Me.Floor)
         end
         Display.write(1)
     elseif Type == "FloorInfo" then
@@ -236,10 +236,10 @@ end
 
 
 local function redstoneHandler()
-    if Me.Me.TypeSt == "FloorStation" then
+    if Me.TypeSt == "FloorStation" then
         if redstone.getInput("right") then
-            modem.SendMesage("FloorInfo", Me.Me.Floor)
-            Lift.CurFloor = tonumber(Me.Me.Floor)
+            modem.SendMesage("FloorInfo", Me.Floor)
+            Lift.CurFloor = tonumber(Me.Floor)
             PrefixSet()
             Display.write(1)
         end
@@ -259,7 +259,7 @@ local function EventHandler()
         end
         Com.Update(eventData)
         modem.Update(eventData)
-        if Me.Me.TypeSt == "FloorStation" then
+        if Me.TypeSt == "FloorStation" then
             Display.Update(eventData)
         end
     end
@@ -273,11 +273,11 @@ end
 
 
 local function Setup()
-    if Me.Me.TypeSt == "LiftContoler" then
+    if Me.TypeSt == "LiftContoler" then
         print("I'm lift mechanic controler")
         modem.SetHandler(StationMesageHandler)
     end
-    if Me.Me.TypeSt == "FloorStation" then
+    if Me.TypeSt == "FloorStation" then
         modem.SetHandler(FloorMesageHandler)
         print("I'm lift floor station")
         Display.updFunc(updButton)
