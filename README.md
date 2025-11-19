@@ -1,1 +1,1 @@
-for quic intall use command - pastbin run FQwRhzyN
+For quick install use command - pastebin run FQwRhzyN
