@@ -1,16 +1,8 @@
 arg = { ... }
 local width, height = term.getSize()
 local Mconfig = {}
+local STARTCMD = "shell.run(\"LiftSystem/LiftSys.lua\")"
 
-local function Confirm(Text)
-    write(Text)
-    local val = read()
-    if val == "y" or val == "Y" then
-        return true
-    else
-        return false
-    end
-end
 
 local function writeTesxCenter(text, Y)
     term.setBackgroundColor(colors.gray)
@@ -41,31 +33,75 @@ local function update()
 end
 
 local function install()
-    
-    Mconfig = { Name = "", Floor = 0, Channel = 0, TypeSt = "FloorStation" } 
+    Mconfig = { Name = "", Floor = 0, Channel = 0, TypeSt = "FloorStation" }
+    local lineI = 1
     local YBfloor = 7
+    local function WR(text)
+        term.setCursorPos(1, lineI)
+        write(text)
+        lineI = lineI + 1
+    end
+    local function Confirm(Text)
+        term.setCursorPos(1, YBfloor + 1)
+        term.clearLine()
+        write(Text)
+        local val = read()
+        if val == "y" or val == "Y" then
+            return true
+        else
+            return false
+        end
+    end
     local function FloorStation()
-        term.setCursorPos(1, 5)
-        write("Set name of floor: ")
+        WR("Set name of floor: ")
         Mconfig["Name"] = read()
         bar(0.8, YBfloor)
-        term.setCursorPos(1, 6)
-        write("Set floor number: ")
+        WR("Set floor number: ")
         Mconfig["Floor"] = read()
     end
+    local function InsertLineToFile(File, number, text)
+        local lines = {}
+        local file_in = io.open(File, "r")
+        if file_in then
+            for line in file_in:lines() do
+                if line == text then
+                    file_in:close()
+                    return
+                end
+                table.insert(lines, line)
+            end
+            file_in:close()
+        end
+        if number == 1 then
+            table.insert(lines, number, text)
+        end
+        local temp_filename = File .. ".temp"
+        local file_out = io.open(temp_filename, "w")
+        if file_out then
+            for _, line in ipairs(lines) do
+                file_out:write(line)
+                --file_out:write("\n")
+            end
+            if not (number == 1) then
+                file_out:write(text)
+            end
+            file_out:close()
+        end
+        fs.delete(File)
+        fs.move(temp_filename, File)
+    end
+
     term.setBackgroundColor(colors.gray)
     term.clear()
-    writeTesxCenter('Installing "Mrbiglizard lift system"', 1)
+    writeTesxCenter('Installing "Mrbiglizard lift system"', lineI)
+    lineI = lineI + 1
     bar(0.1, YBfloor)
-    term.setCursorPos(1, 2)
-    write("Set modem channel: ")
+    WR("Set modem channel: ")
     Mconfig["Channel"] = read()
     os.sleep(0.5)
-    term.setCursorPos(1, 3)
     if not (peripheral.find("monitor") == nil) then
-        write("This computer have a monitor")
+        WR("This computer have a monitor")
         bar(0.3, YBfloor)
-        term.setCursorPos(1, 4)
         os.sleep(0.5)
         if Confirm("Set this computer as floor station(Y/N):") then
             Mconfig["TypeSt"] = "FloorStation"
@@ -76,8 +112,7 @@ local function install()
             bar(0.6, YBfloor)
         end
     else
-        write("This computer does not have a monitor.")
-        term.setCursorPos(1, 4)
+        WR("This computer does not have a monitor.")
         bar(0.3, YBfloor)
         if Confirm("Set this computer as lift controller(Y/N):") then
             Mconfig["TypeSt"] = "LiftContoler"
@@ -88,17 +123,36 @@ local function install()
             FloorStation()
         end
     end
-    bar(9, YBfloor)
-
+    bar(0.7, YBfloor)
     local file = fs.open("Config.conf", "w")
     file.write(textutils.serialize(Mconfig))
     file.close()
+    if fs.exists("startup.lua") then
+        WR("startup.lua allready exist")
+        if Confirm("Add line in file or delete file (Y/N):") then
+            bar(0.8, YBfloor)
+            if Confirm("Add as first line or last (Y/N):") then
+                bar(0.9, YBfloor)
+                InsertLineToFile("startup.lua", 1, STARTCMD)
+            else
+                InsertLineToFile("startup.lua", -1, STARTCMD)
+            end
+        else
+            fs.delete("startup.lua")
+            InsertLineToFile("startup.lua", 1, STARTCMD)
+        end
+    else
+        local file = fs.open("startup.lua", "w")
+        file.close()
+        InsertLineToFile("startup.lua", 1, STARTCMD)
+    end
+
+
     bar(1, YBfloor)
     os.sleep(2)
     term.setBackgroundColor(colors.black)
     term.setCursorPos(1, 1)
     term.clear()
-    
 end
 
 local function delete()
