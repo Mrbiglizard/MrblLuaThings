@@ -6,7 +6,7 @@ local Com = MyApi.Command()
 local modem = MyApi.ModemET()
 local Display = MyApi.Display(peripheral.find("monitor"))
 local FloorsList = { Floors = {} }
-local Me = { Me = { Name = "", Floor = 0, Channel = 0, TypeSt = "FloorStation" } }
+local Me = { Name = "", Floor = 0, Channel = 0, TypeSt = "FloorStation" } 
 local Lift = { CurFloor = 0, NextFloor = 0 }
 local timer_id
 Com.SetName("LiftSys")
