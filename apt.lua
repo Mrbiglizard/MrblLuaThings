@@ -4,7 +4,7 @@
 ---
 
 
-local githuburl = ""
+local githuburl = "https://raw.githubusercontent.com/Mrbiglizard/MrblLuaThings/refs/heads/main/ProgramList"
 local programs = {}
 local args = { ... }
 
