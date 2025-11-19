@@ -1,4 +1,4 @@
-local MyApi = require "MyApi"
+local MyApi = require "api/MyApi"
 local CONF_PATH = "/Config.conf"
 local DAT_PATH = "/floors.dat"
 local INSTALLER_PATH = "/installer.lua"
